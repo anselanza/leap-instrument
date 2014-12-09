@@ -20,7 +20,10 @@ controller.on('connect', function() {
         console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight);
 
         note = mappedHeight;
-        playNote();
+        
+        var midiValue = scaleArray[note];
+        var freqValue = midiToFreq(midiValue);
+        osc.freq(freqValue);
 
       }
 
@@ -46,11 +49,7 @@ function setup() {
   createCanvas(710, 200);
   osc = new p5.SinOsc();
 
-  // Instantiate the envelope with time / value pairs
-  envelope = new p5.Env(0.01, 0.5, 1, 0.5);
-
   osc.start();
-  playNote();
 
   fft = new p5.FFT();
   noStroke();

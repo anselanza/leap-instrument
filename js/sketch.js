@@ -19,7 +19,8 @@ controller.on('connect', function() {
         var mappedHeight = floor(map(actualHeight, 100, 500, 0, scaleArray.length));
         mappedHeight = constrain(mappedHeight, 0, scaleArray.length-1);
         var grabStrength = hand.grabStrength;
-        console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight, "grabStrength: ", grabStrength);
+        var rotation = hand.roll();
+        console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight, "grabStrength: ", grabStrength, "rotation: ", rotation);
 
         note = mappedHeight;
 

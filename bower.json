@@ -19,5 +19,7 @@
     "test",
     "tests"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "leapjs": "~0.6.2"
+  }
 }

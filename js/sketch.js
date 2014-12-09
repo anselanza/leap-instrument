@@ -2,8 +2,10 @@ var osc, envelope, fft;
 
 // var scaleArray = [60, 64, 65, 67, 69, 72];
 // var scaleArray = ["C4", "E4", "F4", "G4", "A4", "C5", "E5", "F5", "G5", "A5", "C6"];
-// var scaleArray = ["C4", "Eb4", "F4", "G4", "Ab4", "C5"];
-var scaleArray = ["E3", "G3", "A3", "B3", "D4", "E4", "G4", "A4", "B4", "D5", "E5"];
+// var scaleArray = ["C2", "G2", "C3", "G3", "C4", "G5", "C6"];
+var scaleArray = ["C4", "Eb4", "F4", "G4", "Ab4", "C5", "Eb5", "G5"];
+// var scaleArray = ["E3", "G3", "A3", "B3", "D4", "E4", "G4", "A4", "B4", "D5", "E5"];
+  // var scaleArray = ["E2", "G2", "A2", "B2", "D3", "E3", "G3", "A3", "B3", "D4", "E4", "G4", "A4", "B4", "D5", "E5"];
 var note = 0;
 
 var synth = new Tone.MonoSynth();
@@ -12,6 +14,7 @@ var fx = new Tone.PingPongDelay("4n");
 var controller = new Leap.Controller({
       enableGestures: true
 });
+var volNormalised;
 
 controller.on('connect', function() {
   console.log("Leap Motion connected!");
@@ -25,6 +28,7 @@ controller.on('connect', function() {
         var mappedHeight = floor(map(actualHeight, 100, 400, 0, scaleArray.length));
         mappedHeight = constrain(mappedHeight, 0, scaleArray.length-1);
         var grabStrength = hand.grabStrength;
+        volNormalised = 1-grabStrength;
         var rotation = hand.roll();
         // console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight, "grabStrength: ", grabStrength, "rotation: ", rotation);
 
@@ -51,7 +55,7 @@ controller.on('connect', function() {
 
 
 function setup() {
-  createCanvas(710, 200);
+  createCanvas(200, 800);
   // osc = new p5.SinOsc();
 
   // osc.start();
@@ -75,15 +79,20 @@ function setup() {
 
 function draw() {
   background(20);
-    
+
+  fill(255,volNormalised*255,volNormalised*255);
+  var steps = scaleArray.length;
+  var y = height - (note + 1) * height/steps;
+  rect(0, y, width, height/steps);
+
  
-  var spectrum = fft.analyze();
-  for (var i = 0; i < spectrum.length/20; i++) {
-    fill(spectrum[i], spectrum[i]/10, 0);
-    var x = map(i, 0, spectrum.length/20, 0, width);
-    var h = map(spectrum[i], 0, 255, 0, height);
-    rect(x, height, spectrum.length/20, -h);
-  }
+  // var spectrum = fft.analyze();
+  // for (var i = 0; i < spectrum.length/20; i++) {
+  //   fill(spectrum[i], spectrum[i]/10, 0);
+  //   var x = map(i, 0, spectrum.length/20, 0, width);
+  //   var h = map(spectrum[i], 0, 255, 0, height);
+  //   rect(x, height, spectrum.length/20, -h);
+  // }
 }
 
 // function keyPressed() {

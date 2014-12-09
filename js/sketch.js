@@ -17,10 +17,11 @@ controller.on('connect', function() {
       if (hand) {
         var actualHeight = hand.palmPosition[1];
         var mappedHeight = floor(map(actualHeight, 100, 500, 0, scaleArray.length));
+        mappedHeight = constrain(mappedHeight, 0, scaleArray.length-1);
         console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight);
 
         note = mappedHeight;
-        
+
         var midiValue = scaleArray[note];
         var freqValue = midiToFreq(midiValue);
         osc.freq(freqValue);
@@ -31,18 +32,6 @@ controller.on('connect', function() {
   }, 50);
 
 });
-
-
-
-// controller.on('frame', function(frame) {
-
-//   var hand = frame.hands[0];
-//   if (!hand) return;
-
-
-
-
-// }).use('screenPosition', {scale: 0.25});
 
 
 function setup() {
@@ -62,16 +51,7 @@ function setup() {
 function draw() {
   background(20);
     
-  // if (frameCount % 60 == 0) {
-  //   var midiValue = scaleArray[note];
-  //   var freqValue = midiToFreq(midiValue);
-  //   osc.freq(freqValue);
-
-  //   envelope.play(osc);
-  //   note = (note + 1) % scaleArray.length;
-  // }
-
-  // plot FFT.analyze() frequency analysis on the canvas 
+ 
   var spectrum = fft.analyze();
   for (var i = 0; i < spectrum.length/20; i++) {
     fill(spectrum[i], spectrum[i]/10, 0);
@@ -80,25 +60,5 @@ function draw() {
     rect(x, height, spectrum.length/20, -h);
   }
 }
-
-
-function playNote() {
-    var midiValue = scaleArray[note];
-    var freqValue = midiToFreq(midiValue);
-    osc.freq(freqValue);
-
-    envelope.play(osc);
-    // note = (note + 1) % scaleArray.length;
-
-}
-
-function keyPressed() {
-  if (keyCode == RIGHT_ARROW) {
-    console.log("Get next note...");
-    playNote();
-    note = (note + 1) % scaleArray.length;
-  }
-}
-
 
 

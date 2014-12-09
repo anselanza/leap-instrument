@@ -19,7 +19,5 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "p5.js": "git://github.com/lmccart/p5.js#0.3.2"
-  }
+  "dependencies": {}
 }

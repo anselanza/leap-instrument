@@ -1,41 +1,39 @@
-var locs = [];
-var c;
+var osc, envelope, fft;
 
-// -------------
-// Setup
-// -------------
+var scaleArray = [60, 62, 64, 65, 67, 69, 71, 72];
+var note = 0;
+
 function setup() {
-  c = createCanvas(windowWidth, windowHeight);
+  createCanvas(710, 200);
+  osc = new p5.SinOsc();
 
-  var res = 20;
-  var countX = ceil(width/res) + 1;
-  var countY = ceil(height/res) + 1;
+  // Instantiate the envelope with time / value pairs
+  envelope = new p5.Env(0.01, 0.5, 1, 0.5);
 
-  for (var j = 0; j < countY; j++) {
-    for (var i = 0; i < countX; i++) {
-      locs.push( new p5.Vector(res*i, res*j) );
-    }
-  };
+  osc.start();
 
-  noFill();
-  stroke(249,78,128);
+  fft = new p5.FFT();
+  noStroke();
 }
 
-// -------------
-// Draw
-// -------------
 function draw() {
-  background(30,67,137);
-  for (var i = locs.length - 1; i >= 0; i--) {
-    var h = calcVec( locs[i].x - mouseX, locs[i].y - mouseY);
-    push();
-      translate(locs[i].x, locs[i].y);
-      rotate(h.heading());
-      line(0, 0, 0, - 15);
-    pop();
-  };
-}
+  background(20);
+    
+  if (frameCount % 60 == 0) {
+    var midiValue = scaleArray[note];
+    var freqValue = midiToFreq(midiValue);
+    osc.freq(freqValue);
 
-function calcVec(x, y) {
-  return new p5.Vector(y - x, - x - y);
+    envelope.play(osc);
+    note = (note + 1) % scaleArray.length;
+  }
+
+  // plot FFT.analyze() frequency analysis on the canvas 
+  var spectrum = fft.analyze();
+  for (var i = 0; i < spectrum.length/20; i++) {
+    fill(spectrum[i], spectrum[i]/10, 0);
+    var x = map(i, 0, spectrum.length/20, 0, width);
+    var h = map(spectrum[i], 0, 255, 0, height);
+    rect(x, height, spectrum.length/20, -h);
+  }
 }

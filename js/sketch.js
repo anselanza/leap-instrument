@@ -26,10 +26,10 @@ controller.on('connect', function() {
         var midiValue = scaleArray[note];
         var freqValue = midiToFreq(midiValue);
         osc.freq(freqValue);
-        osc.amp(1-grabStrength);
+        osc.amp(1-grabStrength, 0.05);
 
       } else {
-        osc.amp(0);
+        osc.amp(0, 1);
       }
 
 

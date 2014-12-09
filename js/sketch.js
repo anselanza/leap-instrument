@@ -1,6 +1,7 @@
 var osc, envelope, fft;
 
-var scaleArray = [60, 64, 65, 67, 69, 72];
+// var scaleArray = [60, 64, 65, 67, 69, 72];
+var scaleArray = ["C4", "E4", "F4", "G4", "A4", "C5"];
 var note = 0;
 
 var synth = new Tone.MonoSynth();
@@ -29,8 +30,8 @@ controller.on('connect', function() {
         var midiValue = scaleArray[note];
         var freqValue = midiToFreq(midiValue);
 
-        synth.triggerAttackRelease(freqValue);
-        var volDb = 0 - grabStrength * 20;
+        synth.triggerAttackRelease(scaleArray[note]);
+        var volDb = 0 - grabStrength * 50;
         synth.setVolume(volDb, 0.1);
         // osc.freq(freqValue, 0.1);
         // osc.amp(1-grabStrength, 0.05);

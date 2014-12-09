@@ -18,14 +18,18 @@ controller.on('connect', function() {
         var actualHeight = hand.palmPosition[1];
         var mappedHeight = floor(map(actualHeight, 100, 500, 0, scaleArray.length));
         mappedHeight = constrain(mappedHeight, 0, scaleArray.length-1);
-        console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight);
+        var grabStrength = hand.grabStrength;
+        console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight, "grabStrength: ", grabStrength);
 
         note = mappedHeight;
 
         var midiValue = scaleArray[note];
         var freqValue = midiToFreq(midiValue);
         osc.freq(freqValue);
+        osc.amp(1-grabStrength);
 
+      } else {
+        osc.amp(0);
       }
 
 

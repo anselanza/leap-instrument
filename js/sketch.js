@@ -19,14 +19,14 @@ function setup() {
 function draw() {
   background(20);
     
-  if (frameCount % 60 == 0) {
-    var midiValue = scaleArray[note];
-    var freqValue = midiToFreq(midiValue);
-    osc.freq(freqValue);
+  // if (frameCount % 60 == 0) {
+  //   var midiValue = scaleArray[note];
+  //   var freqValue = midiToFreq(midiValue);
+  //   osc.freq(freqValue);
 
-    envelope.play(osc);
-    note = (note + 1) % scaleArray.length;
-  }
+  //   envelope.play(osc);
+  //   note = (note + 1) % scaleArray.length;
+  // }
 
   // plot FFT.analyze() frequency analysis on the canvas 
   var spectrum = fft.analyze();
@@ -35,5 +35,17 @@ function draw() {
     var x = map(i, 0, spectrum.length/20, 0, width);
     var h = map(spectrum[i], 0, 255, 0, height);
     rect(x, height, spectrum.length/20, -h);
+  }
+}
+
+function keyPressed() {
+  if (keyCode == RIGHT_ARROW) {
+    console.log("Get next note...");
+    var midiValue = scaleArray[note];
+    var freqValue = midiToFreq(midiValue);
+    osc.freq(freqValue);
+
+    envelope.play(osc);
+    note = (note + 1) % scaleArray.length;
   }
 }

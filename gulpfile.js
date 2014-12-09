@@ -3,15 +3,10 @@ var connect = require('gulp-connect');
 var colors = require('colors');
 var watch = require('gulp-watch');
 
-var wiredep = require('wiredep').stream;
 
 gulp.task('bower', function () {
-  gulp.src('index.html')
-    .pipe(wiredep({
-      optional: 'configuration',
-      goes: 'here'
-    }))
-    .pipe(gulp.dest('./dest'));
+    require('wiredep')({src:'index.html'});
+    console.log("Did the wiredep magic");
 });
 
 gulp.task('dev', function() {

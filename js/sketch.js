@@ -12,6 +12,9 @@ controller.on('connect', function() {
 });
 
 
+controller.on('frame', function(frame) {
+  console.log('frame!');
+});
 
 
 function setup() {
@@ -71,12 +74,4 @@ function keyPressed() {
 }
 
 
-Leap.loop(function(frame) {
 
-  frame.hands.forEach(function(hand, index) {
-
-    console.log("Update sceenPosition: ", hand.screenPosition());
-
-  });
-
-}).use('screenPosition', {scale: 0.25});

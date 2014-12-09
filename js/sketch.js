@@ -1,6 +1,6 @@
 var osc, envelope, fft;
 
-var scaleArray = [60, 62, 64, 65, 67, 69, 71, 72];
+var scaleArray = [60, 64, 65, 67, 69, 72];
 var note = 0;
 
 var controller = new Leap.Controller({
@@ -9,12 +9,37 @@ var controller = new Leap.Controller({
 
 controller.on('connect', function() {
   console.log("Leap Motion connected!");
+
+  setInterval(function(){
+      var frame = controller.frame();
+      var hand = frame.hands[0];
+
+      if (hand) {
+        var actualHeight = hand.palmPosition[1];
+        var mappedHeight = floor(map(actualHeight, 100, 500, 0, scaleArray.length));
+        console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight);
+
+        note = mappedHeight;
+        playNote();
+
+      }
+
+
+  }, 50);
+
 });
 
 
-controller.on('frame', function(frame) {
-  console.log('frame!');
-});
+
+// controller.on('frame', function(frame) {
+
+//   var hand = frame.hands[0];
+//   if (!hand) return;
+
+
+
+
+// }).use('screenPosition', {scale: 0.25});
 
 
 function setup() {
@@ -29,6 +54,8 @@ function setup() {
 
   fft = new p5.FFT();
   noStroke();
+
+  console.log("Screen resolution: ", displayWidth, "x", displayHeight);
 
   controller.connect();
 }
@@ -62,7 +89,7 @@ function playNote() {
     osc.freq(freqValue);
 
     envelope.play(osc);
-    note = (note + 1) % scaleArray.length;
+    // note = (note + 1) % scaleArray.length;
 
 }
 
@@ -70,6 +97,7 @@ function keyPressed() {
   if (keyCode == RIGHT_ARROW) {
     console.log("Get next note...");
     playNote();
+    note = (note + 1) % scaleArray.length;
   }
 }
 

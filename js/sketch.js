@@ -22,6 +22,7 @@ function setup() {
   envelope = new p5.Env(0.01, 0.5, 1, 0.5);
 
   osc.start();
+  playNote();
 
   fft = new p5.FFT();
   noStroke();
@@ -51,15 +52,21 @@ function draw() {
   }
 }
 
-function keyPressed() {
-  if (keyCode == RIGHT_ARROW) {
-    console.log("Get next note...");
+
+function playNote() {
     var midiValue = scaleArray[note];
     var freqValue = midiToFreq(midiValue);
     osc.freq(freqValue);
 
     envelope.play(osc);
     note = (note + 1) % scaleArray.length;
+
+}
+
+function keyPressed() {
+  if (keyCode == RIGHT_ARROW) {
+    console.log("Get next note...");
+    playNote();
   }
 }
 
@@ -67,7 +74,9 @@ function keyPressed() {
 Leap.loop(function(frame) {
 
   frame.hands.forEach(function(hand, index) {
-    console.log(hand.screenPosition());
+
+    console.log("Update sceenPosition: ", hand.screenPosition());
+
   });
 
-})
+}).use('screenPosition', {scale: 0.25});

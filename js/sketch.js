@@ -3,6 +3,8 @@ var osc, envelope, fft;
 var scaleArray = [60, 64, 65, 67, 69, 72];
 var note = 0;
 
+var synth = new Tone.MonoSynth();
+
 var controller = new Leap.Controller({
       enableGestures: true
 });
@@ -26,11 +28,16 @@ controller.on('connect', function() {
 
         var midiValue = scaleArray[note];
         var freqValue = midiToFreq(midiValue);
-        osc.freq(freqValue, 0.1);
-        osc.amp(1-grabStrength, 0.05);
+
+        synth.triggerAttackRelease(freqValue);
+        var volDb = 0 - grabStrength * 20;
+        synth.setVolume(volDb, 0.1);
+        // osc.freq(freqValue, 0.1);
+        // osc.amp(1-grabStrength, 0.05);
 
       } else {
-        osc.amp(0, 1);
+        synth.setVolume(-100, 1);
+        // osc.amp(0, 1);
       }
 
 
@@ -41,14 +48,18 @@ controller.on('connect', function() {
 
 function setup() {
   createCanvas(710, 200);
-  osc = new p5.SinOsc();
+  // osc = new p5.SinOsc();
 
-  osc.start();
+  // osc.start();
 
   fft = new p5.FFT();
   noStroke();
 
   console.log("Screen resolution: ", displayWidth, "x", displayHeight);
+
+  synth.toMaster();
+
+  Tone.Transport.start();
 
   controller.connect();
 }
@@ -66,4 +77,7 @@ function draw() {
   }
 }
 
-
+// function keyPressed() {
+//   console.log("Triggering note");
+//   synth.triggerAttackRelease("C4", "8n");
+// }

@@ -3,6 +3,17 @@ var osc, envelope, fft;
 var scaleArray = [60, 62, 64, 65, 67, 69, 71, 72];
 var note = 0;
 
+var controller = new Leap.Controller({
+      enableGestures: true
+});
+
+controller.on('connect', function() {
+  console.log("Leap Motion connected!");
+});
+
+
+
+
 function setup() {
   createCanvas(710, 200);
   osc = new p5.SinOsc();
@@ -14,6 +25,8 @@ function setup() {
 
   fft = new p5.FFT();
   noStroke();
+
+  controller.connect();
 }
 
 function draw() {
@@ -49,3 +62,6 @@ function keyPressed() {
     note = (note + 1) % scaleArray.length;
   }
 }
+
+
+

@@ -1,7 +1,9 @@
 var osc, envelope, fft;
 
 // var scaleArray = [60, 64, 65, 67, 69, 72];
-var scaleArray = ["C4", "E4", "F4", "G4", "A4", "C5"];
+// var scaleArray = ["C4", "E4", "F4", "G4", "A4", "C5", "E5", "F5", "G5", "A5", "C6"];
+// var scaleArray = ["C4", "Eb4", "F4", "G4", "Ab4", "C5"];
+var scaleArray = ["E3", "G3", "A3", "B3", "D4", "E4", "G4", "A4", "B4", "D5", "E5"];
 var note = 0;
 
 var synth = new Tone.MonoSynth();
@@ -19,11 +21,11 @@ controller.on('connect', function() {
 
       if (hand) {
         var actualHeight = hand.palmPosition[1];
-        var mappedHeight = floor(map(actualHeight, 100, 500, 0, scaleArray.length));
+        var mappedHeight = floor(map(actualHeight, 100, 400, 0, scaleArray.length));
         mappedHeight = constrain(mappedHeight, 0, scaleArray.length-1);
         var grabStrength = hand.grabStrength;
         var rotation = hand.roll();
-        console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight, "grabStrength: ", grabStrength, "rotation: ", rotation);
+        // console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight, "grabStrength: ", grabStrength, "rotation: ", rotation);
 
         note = mappedHeight;
 
@@ -32,7 +34,7 @@ controller.on('connect', function() {
 
         synth.triggerAttackRelease(scaleArray[note]);
         var volDb = 0 - grabStrength * 50;
-        synth.setVolume(volDb, 0.1);
+        synth.setVolume(volDb, 0.05);
         // osc.freq(freqValue, 0.1);
         // osc.amp(1-grabStrength, 0.05);
 
@@ -59,6 +61,7 @@ function setup() {
   console.log("Screen resolution: ", displayWidth, "x", displayHeight);
 
   synth.toMaster();
+  synth.setPortamento(0.1);
 
   Tone.Transport.start();
 

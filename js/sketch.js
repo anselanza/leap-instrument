@@ -7,6 +7,7 @@ var scaleArray = ["E3", "G3", "A3", "B3", "D4", "E4", "G4", "A4", "B4", "D5", "E
 var note = 0;
 
 var synth = new Tone.MonoSynth();
+var fx = new Tone.PingPongDelay("8n");
 
 var controller = new Leap.Controller({
       enableGestures: true
@@ -60,7 +61,11 @@ function setup() {
 
   console.log("Screen resolution: ", displayWidth, "x", displayHeight);
 
-  synth.toMaster();
+  fx.setFeedback(0.2);
+  synth.connect(fx);
+  fx.toMaster();
+  fx.setWet(0.5);
+
   synth.setPortamento(0.1);
 
   Tone.Transport.start();

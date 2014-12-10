@@ -3,9 +3,9 @@ var osc, envelope, fft;
 // var scaleArray = [60, 64, 65, 67, 69, 72];
 // var scaleArray = ["C4", "E4", "F4", "G4", "A4", "C5", "E5", "F5", "G5", "A5", "C6"];
 // var scaleArray = ["C2", "G2", "C3", "G3", "C4", "G5", "C6"];
-var scaleArray = ["C4", "Eb4", "F4", "G4", "Ab4", "C5", "Eb5", "G5"];
+// var scaleArray = ["C4", "Eb4", "F4", "G4", "Ab4", "C5", "Eb5", "G5"];
 // var scaleArray = ["E3", "G3", "A3", "B3", "D4", "E4", "G4", "A4", "B4", "D5", "E5"];
-  // var scaleArray = ["E2", "G2", "A2", "B2", "D3", "E3", "G3", "A3", "B3", "D4", "E4", "G4", "A4", "B4", "D5", "E5"];
+  var scaleArray = ["E2", "G2", "A2", "B2", "D3", "E3", "G3", "A3", "B3", "D4", "E4", "G4", "A4", "B4", "D5", "E5"];
 var note = 0;
 
 var synth = new Tone.MonoSynth();
@@ -55,7 +55,7 @@ controller.on('connect', function() {
 
 
 function setup() {
-  createCanvas(200, 800);
+  createCanvas(200, 600);
   // osc = new p5.SinOsc();
 
   // osc.start();

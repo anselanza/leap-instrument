@@ -15,12 +15,44 @@ angular.module('midiserverApp')
 
         p.draw = function() {
 
-          background(20);
+          background(0);
 
-          fill(255,scope.volNormalised*255,scope.volNormalised*255);
-          var steps = scope.scaleArray.length;
-          var y = height - (scope.note + 1) * height/steps;
-          rect(0, y, width, height/steps);
+          if (scope.scaleArray.length > 0) {
+
+            var y;
+            var steps = scope.scaleArray.length;
+ 
+            for (var i=0; i<scope.scaleArray.length; i++) {
+              var thisNote = scope.scaleArray[i];
+
+              // Fret markers...
+              y = height - height/steps * i;
+              noFill();
+              strokeWeight(1);
+              stroke(50);
+              rect (0, y, width, height/steps);
+
+              // Note markers...
+              var x = map (thisNote, 30, 100, 0, width);
+              strokeWeight(2);
+              stroke(255);
+              noFill();
+              // fill (0,0,255);
+              y = height - height/steps * i - (height/steps/2);
+              ellipse (x, y, 10, 10);
+
+            }
+
+            // Current note selection...
+            noStroke();
+            fill(255,scope.volNormalised*255,scope.volNormalised*255, 100);
+            y = height - (scope.note + 1) * height/steps;
+            rect(0, y, width, height/steps);
+
+
+          }
+
+
 
         }
 

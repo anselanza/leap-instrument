@@ -1,26 +1,26 @@
 {
-  "name": "p5js-seed",
-  "version": "0.0.1",
-  "homepage": "https://github.com/winkerVSbecks/p5js-seed",
-  "authors": [
-    "Varun Vachhar <varunvachhar@gmail.com>"
-  ],
-  "description": "A great starting point for building a p5.js project",
-  "keywords": [
-    "p5.js",
-    "p5js",
-    "processing"
-  ],
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "name": "midiserver",
+  "version": "0.0.0",
   "dependencies": {
+    "angular": ">=1.2.*",
+    "json3": "~3.3.1",
+    "es5-shim": "~3.0.1",
+    "jquery": "~1.11.0",
+    "bootstrap-sass-official": "~3.1.1",
+    "bootstrap": "~3.1.1",
+    "angular-resource": ">=1.2.*",
+    "angular-cookies": ">=1.2.*",
+    "angular-sanitize": ">=1.2.*",
+    "angular-bootstrap": "~0.11.0",
+    "font-awesome": ">=4.1.0",
+    "lodash": "~2.4.1",
+    "angular-ui-router": "~0.2.10",
+    "p5js": "~0.3.14",
     "leapjs": "~0.6.2",
     "tone": "*"
+  },
+  "devDependencies": {
+    "angular-mocks": ">=1.2.*",
+    "angular-scenario": ">=1.2.*"
   }
 }

@@ -13,10 +13,17 @@ angular.module('midiserverApp')
 	$scope.note = 0;
 
 	$scope.param1 = 0;
+	$scope.param2 = 0;
 
 	var synth = new Tone.FMSynth();
-	var fx = new Tone.PingPongDelay("4n");
+
+	var fx1 = new Tone.PingPongDelay("4n");
+	var fx2 = new Tone.Chorus();
+	var fx3 = new Tone.Filter();
+
 	$scope.volNormalised;
+
+
 
 
 	var controller = new Leap.Controller({
@@ -69,10 +76,14 @@ angular.module('midiserverApp')
 
 	controller.connect();
 
-	fx.setFeedback(0.3);
-	synth.connect(fx);
-	fx.toMaster();
-	fx.setWet(0.5);
+	fx1.setFeedback(0.3);
+	// fx2.setOrder(3);
+	synth.connect(fx1);
+	synth.connect(fx2);
+	fx1.toMaster();
+	fx2.toMaster();
+	fx1.setWet(0.5);
+	fx2.setWet(0.8);
 
 	synth.setPortamento(0.1);
 
@@ -121,8 +132,11 @@ angular.module('midiserverApp')
  		synth.setModulationIndex(newValue);
  	});
 
+ 	setInterval(function () {
+ 		// console.log("Updating fx");
+ 		fx2.setRate($scope.param2);
 
-
+ 	}, 100);
 
 
 

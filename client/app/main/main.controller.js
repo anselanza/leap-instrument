@@ -13,12 +13,12 @@ angular.module('midiserverApp')
 	$scope.note = 0;
 
 	$scope.param1 = 0;
-	$scope.param2 = 0;
+	$scope.param2 = 1;
 
 	var synth = new Tone.FMSynth();
 
 	var fx1 = new Tone.PingPongDelay("4n");
-	var fx2 = new Tone.Chorus();
+	var fx2 = new Tone.Chorus(0);
 	var fx3 = new Tone.Filter();
 
 	$scope.volNormalised;
@@ -35,16 +35,17 @@ angular.module('midiserverApp')
 
 	  setInterval(function(){
 	      var frame = controller.frame();
-	      var hand = frame.hands[0];
+	      var hand1 = frame.hands[0];
+	      var hand2 = frame.hands[1];
 
 
-	      if (hand) {
-	        var actualHeight = hand.palmPosition[1];
+	      if (hand1) {
+	        var actualHeight = hand1.palmPosition[1];
 	        var mappedHeight = floor(map(actualHeight, 100, 400, 0, $scope.scaleArray.length));
 	        mappedHeight = constrain(mappedHeight, 0, $scope.scaleArray.length-1);
-	        var grabStrength = hand.grabStrength;
+	        var grabStrength = hand1.grabStrength;
 	        $scope.volNormalised = 1-grabStrength;
-	        var rotation = hand.roll();
+	        var rotation = hand1.roll();
 	        
 	        $scope.param1 = constrain(map(rotation, -2, 2, 0, 30), 0, 30);
 	        
@@ -69,6 +70,18 @@ angular.module('midiserverApp')
 	        // osc.amp(0, 1);
 	      }
 
+	      if (hand2) {
+	        var actualHeight = hand2.palmPosition[1];
+	        var mappedHeight = map(actualHeight, 200, 400, 0, 1);
+	        mappedHeight = constrain(mappedHeight, 0, 1);
+
+	        $scope.param2 = constrain(map(hand2.grabStrength, 0, 1, -1, 20), 0, 20);
+
+	        $scope.param3 = mappedHeight;
+
+
+	      }
+
 
 	  }, 50);
 
@@ -83,7 +96,7 @@ angular.module('midiserverApp')
 	fx1.toMaster();
 	fx2.toMaster();
 	fx1.setWet(0.5);
-	fx2.setWet(0.8);
+	fx2.setWet(0.6);
 
 	synth.setPortamento(0.1);
 
@@ -131,6 +144,20 @@ angular.module('midiserverApp')
  		// synth.setHarmonicity(newValue);
  		synth.setModulationIndex(newValue);
  	});
+
+ 	// $scope.$watch('param2', function(oldValue, newValue) {
+ 	// 	// console.log('param1 changed to ', newValue);
+ 	// 	// synth.setHarmonicity(newValue);
+ 	// 	fx2.setRate(newValue);
+ 	// });
+
+
+ 	$scope.$watch('param3', function(oldValue, newValue) {
+ 		// console.log('param1 changed to ', newValue);
+ 		// synth.setHarmonicity(newValue);
+ 		fx1.setWet(newValue);
+ 	});
+
 
  	setInterval(function () {
  		// console.log("Updating fx");

@@ -1,2 +1,21 @@
-<processing>Loading processing...</processing>
-{{scaleArray}}
+<div class="container">
+	<div class="row">
+		<div class="col-md-9">
+			<processing>Loading processing...</processing>
+		</div>
+		<div class="col-md-3">
+		
+			<form>
+				<div class="form-group">
+					<label>Scale Array</label>
+					<input type="text" class="form-control" value="{{scaleArray}}"></input>
+
+					<label>P1: ModulationIndex</label>
+					<div range-slider min="0" max="30" model-max="param1" pin-handle="min" decimal-places="2"></div>
+				</div>
+			</form>
+
+
+		</div>
+	</div>
+</div>

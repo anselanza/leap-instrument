@@ -12,7 +12,9 @@ angular.module('midiserverApp')
 	$scope.scaleArray = [];
 	$scope.note = 0;
 
-	var synth = new Tone.MonoSynth();
+	$scope.param1 = 0;
+
+	var synth = new Tone.FMSynth();
 	var fx = new Tone.PingPongDelay("4n");
 	$scope.volNormalised;
 
@@ -36,6 +38,10 @@ angular.module('midiserverApp')
 	        var grabStrength = hand.grabStrength;
 	        $scope.volNormalised = 1-grabStrength;
 	        var rotation = hand.roll();
+	        
+	        $scope.param1 = constrain(map(rotation, -2, 2, 0, 30), 0, 30);
+	        
+	        $scope.$digest();
 	        // console.log("actualHeight: ", actualHeight, " / mappedHeight: ", mappedHeight, "grabStrength: ", grabStrength, "rotation: ", rotation);
 
 	        $scope.note = mappedHeight;
@@ -109,7 +115,11 @@ angular.module('midiserverApp')
       });
     });
 
- 
+ 	$scope.$watch('param1', function(oldValue, newValue) {
+ 		// console.log('param1 changed to ', newValue);
+ 		// synth.setHarmonicity(newValue);
+ 		synth.setModulationIndex(newValue);
+ 	});
 
 
 

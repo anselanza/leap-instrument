@@ -9,8 +9,11 @@ angular.module('midiserverApp')
     // });
 
 	// $scope.scaleArray = ["E3", "G3", "A3", "B3", "D4", "E4", "G4", "A4", "B4", "D5", "E5"];
-	$scope.scaleArray = [];
+	$scope.scaleArray = [55, 62, 67];
+	// $scope.scaleArray = [];
 	$scope.note = 0;
+
+	$scope.bowMode = false;
 
 	$scope.param1 = 0;
 	$scope.param2 = 1;
@@ -58,16 +61,17 @@ angular.module('midiserverApp')
 	        // var freqValue = midiToFreq(midiValue);
 
 	        if ($scope.scaleArray.length > 0) {
-		        synth.triggerAttackRelease(synth.midiToNote($scope.scaleArray[$scope.note]));
+	        	if ($scope.bowMode) {
+	        		synth.setNote(synth.midiToNote($scope.scaleArray[$scope.note]));
+	        	} else {
+			        synth.triggerAttackRelease(synth.midiToNote($scope.scaleArray[$scope.note]));
+			        var volDb = 0 - grabStrength * 50;
+			        synth.setVolume(volDb, 0.05);
+			    }
 		    }
-	        var volDb = 0 - grabStrength * 50;
-	        synth.setVolume(volDb, 0.05);
-	        // osc.freq(freqValue, 0.1);
-	        // osc.amp(1-grabStrength, 0.05);
 
 	      } else {
-	        synth.setVolume(-100, 1);
-	        // osc.amp(0, 1);
+	        synth.setVolume(-1000, 1);
 	      }
 
 	      if (hand2) {
@@ -75,9 +79,12 @@ angular.module('midiserverApp')
 	        var mappedHeight = map(actualHeight, 200, 400, 0, 1);
 	        mappedHeight = constrain(mappedHeight, 0, 1);
 
-	        $scope.param2 = constrain(map(hand2.grabStrength, 0, 1, -1, 20), 0, 20);
+	        if ($scope.bowMode) {
 
-	        $scope.param3 = mappedHeight;
+	        } else {
+		        $scope.param2 = constrain(map(hand2.grabStrength, 0, 1, -1, 20), 0, 20);
+		        $scope.param3 = mappedHeight;
+	        }
 
 
 	      }
@@ -100,7 +107,21 @@ angular.module('midiserverApp')
 
 	synth.setPortamento(0.1);
 
+	Tone.Transport.setBpm(107);
 	Tone.Transport.start();
+
+
+	// synth.triggerAttack(synth.midiToNote($scope.scaleArray[$scope.note]));
+	$scope.$watch('bowMode', function() {
+		console.log("Bow mode change: ", $scope.bowMode);
+		if ($scope.bowMode) {
+			console.log("Bow bowMode set, triggering note...");
+			synth.triggerAttack(synth.midiToNote($scope.scaleArray[$scope.note]));
+			synth.setVolume(-1000, 0.05);
+			// synth.setVolume(-6, 0.05);
+		}
+	});
+	// synth.triggerAttack("C4");
 
 	var socket = io();
 

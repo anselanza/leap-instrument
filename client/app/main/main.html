@@ -7,17 +7,22 @@
 		
 			<form>
 				<div class="form-group">
+					<label>Bow mode</label>
+					<input type="checkbox" class="form-control" ng-model="bowMode"></input>
+
 					<label>Scale Array</label>
 					<input type="text" class="form-control" value="{{scaleArray}}"></input>
 
-					<label>P1: ModulationIndex</label>
-					<div range-slider min="0" max="30" model-max="param1" pin-handle="min" decimal-places="2"></div>
+					<div ng-hide="bowMode">
+						<label>P1: ModulationIndex</label>
+						<div range-slider min="0" max="30" model-max="param1" pin-handle="min" decimal-places="2"></div>
 
-					<label>P2: Chorus {{param2}}</label>
-					<div range-slider min="0" max="20" model-max="param2" pin-handle="min" decimal-places="1"></div>
+						<label>P2: Chorus {{param2}}</label>
+						<div range-slider min="0" max="20" model-max="param2" pin-handle="min" decimal-places="1"></div>
 
-					<label>P3: Reverb</label>
-					<div range-slider min="0" max="1" model-max="param3" pin-handle="min" decimal-places="2"></div>
+						<label>P3: Reverb</label>
+						<div range-slider min="0" max="1" model-max="param3" pin-handle="min" decimal-places="2"></div>
+					</div>
 
 				</div>
 			</form>
